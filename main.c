@@ -1,20 +1,21 @@
-#include <stdio.h>
-#include <unistd.h>
-// #include <string.h>
-// #include <stdlib.h>
-// #include <sys/types.h>
-// #include <sys/stat.h>
-// #include <dirent.h>
-// #include <pwd.h>
-// #include <time.h>
-// #include <grp.h>
-// #include <sys/wait.h>
-// #include "headers.h"
-// #include <fcntl.h> 
+#include "headers.h"
+
+void main_loop()
+{
+	do
+	{
+		getcwd(path, sizeof(path));
+		get_pwd();
+		printf("%s@%s:%s", user_name, system_name, path );
+	}while(0);
+}
 
 void initiate()
 {
-	
+	getlogin_r(user_name, sizeof(user_name));
+	gethostname(system_name, sizeof(system_name));
+	getcwd(original_path, sizeof(original_path));
+	main_loop();
 }
 
 int main(int argc, char  *argv[])
