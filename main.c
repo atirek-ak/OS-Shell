@@ -6,7 +6,9 @@ void main_loop()
 	{
 		getcwd(path, sizeof(path));
 		get_pwd();
-		printf("%s@%s:%s", user_name, system_name, path );
+		printf("%s@%s:%s$ ", user_name, system_name, path );
+		input = getInput();
+		printf("%s\n", input);
 	}while(0);
 }
 

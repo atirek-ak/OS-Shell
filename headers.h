@@ -15,6 +15,7 @@
 //Global variables
 char user_name[100], system_name[100];
 char original_path[1024], path[1024];
+char * input;
 
 //Functions
 //main.c
@@ -23,3 +24,6 @@ void main_loop();
 
 //pwd.c
 void get_pwd();
+
+//readInput.c
+char * getInput();
