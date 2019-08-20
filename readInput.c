@@ -9,7 +9,7 @@ char * get_input()
 	int i=0;
 	if(!buffer)
 	{
-		printf("Could not load buffer\n");
+		perror("Error");
 		exit(EXIT_FAILURE);
 	}
 	while(1)
@@ -30,7 +30,7 @@ char * get_input()
 			buffer = realloc(buffer, size);
 			if(!buffer)
 			{
-				printf("Could not load buffer\n");
+				perror("Error");
 				exit(EXIT_FAILURE);
 			}
 		}

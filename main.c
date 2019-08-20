@@ -4,10 +4,10 @@ void main_loop()
 {
 	do
 	{
-		//Print directory & user details
+		//Print directory & user details; Change directory
 		getcwd(path, sizeof(path));
 		get_pwd();
-		printf("%s@%s:%s$ ", user_name, system_name, path );
+		printf("%s@%s:%s$ ", user_name, system_name, displayed_path );
 		//Input
 		char * input;
 		input = get_input();
@@ -19,7 +19,7 @@ void initiate()
 {
 	getlogin_r(user_name, sizeof(user_name));
 	gethostname(system_name, sizeof(system_name));
-	getcwd(original_path, sizeof(original_path));
+	getcwd(home, sizeof(home));
 	main_loop();
 }
 

@@ -14,7 +14,7 @@
 
 //Global variables
 char user_name[100], system_name[100];
-char original_path[1024], path[1024];
+char home[1024], path[1024], displayed_path[1024];
 
 //Functions
 //main.c
@@ -29,3 +29,7 @@ char * get_input();
 
 //processInput.c
 void process_input(char * input);
+void process_single_command(char * parameter);
+
+//cd.c
+void change_dir(char * command);
