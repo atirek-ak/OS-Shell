@@ -2,6 +2,7 @@
 
 void main_loop()
 {
+	int i=0;
 	do
 	{
 		//Print directory & user details; Change directory
@@ -12,7 +13,8 @@ void main_loop()
 		char * input;
 		input = get_input();
 		process_input(input);
-	}while(0);
+		i++;
+	}while(i<5);
 }
 
 void initiate()
