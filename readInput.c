@@ -2,7 +2,7 @@
 
 #define BUFFER_SIZE 1024
 
-char * getInput()
+char * get_input()
 {
 	int size = BUFFER_SIZE;
 	char * buffer = malloc(sizeof(char) * BUFFER_SIZE);

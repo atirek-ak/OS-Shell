@@ -4,11 +4,14 @@ void main_loop()
 {
 	do
 	{
+		//Print directory & user details
 		getcwd(path, sizeof(path));
 		get_pwd();
 		printf("%s@%s:%s$ ", user_name, system_name, path );
-		input = getInput();
-		printf("%s\n", input);
+		//Input
+		char * input;
+		input = get_input();
+		process_input(input);
 	}while(0);
 }
 
