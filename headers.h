@@ -33,3 +33,6 @@ void process_single_command(char * parameter);
 
 //cd.c
 void change_dir(char * command);
+
+//echo.c
+void echo(char * command);

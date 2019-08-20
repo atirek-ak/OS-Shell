@@ -2,19 +2,15 @@
 
 void process_single_command(char * parameter)
 {
-	// printf("%s\n", parameter);
 	char command[1000];
 	char * save_command;
 	strcpy(command, parameter);
-	// printf("Pass\n");
-	// printf("%s\n", parameter);
 	char * word = strtok_r(command, " ", &save_command);
 	if(strcmp("cd", word) == 0)
-	{
-		// printf("Yes\n");
-		// printf("%s\n", parameter);
 		change_dir(parameter);
-	}
+	else if(strcmp("echo", word) == 0)
+		echo(parameter);
+	return;
 }
 
 void process_input(char * input)
@@ -29,4 +25,5 @@ void process_input(char * input)
 		process_single_command(command);
 		command = strtok_r(NULL,";",&save_single_command);
 	}
+	return;
 }

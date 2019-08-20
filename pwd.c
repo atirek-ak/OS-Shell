@@ -7,7 +7,7 @@ void get_pwd()
 		displayed_path[0] = '~';
 		displayed_path[1] = '\0';
 	}
-	else
+	else if(strlen(home) < strlen(path))
 	{
 		int len = strlen(home);
 		char str[1024];
@@ -17,5 +17,12 @@ void get_pwd()
 		str[0] = '~';
 		for(int i=0;i<strlen(str);i++)
 			displayed_path[i] = str[i];
+	}
+	else
+	{
+		int i;
+		for(i=0;i<strlen(path);i++)
+			displayed_path[i] = path[i];
+		displayed_path[i] = '\0';
 	}
 }
