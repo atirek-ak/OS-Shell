@@ -8,7 +8,7 @@ void main_loop()
 		//Print directory & user details; Change directory
 		getcwd(path, sizeof(path));
 		get_pwd();
-		printf("%s@%s:%s$ ", user_name, system_name, displayed_path );
+		printf("%s@%s:%s ", user_name, system_name, displayed_path );
 		//Input
 		char * input;
 		input = get_input();
