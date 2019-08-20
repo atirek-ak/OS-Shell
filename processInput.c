@@ -10,6 +10,8 @@ void process_single_command(char * parameter)
 		change_dir(parameter);
 	else if(strcmp("echo", word) == 0)
 		echo(parameter);
+	else if(strcmp("pwd", word) == 0)
+		printf("%s\n", path);
 	return;
 }
 

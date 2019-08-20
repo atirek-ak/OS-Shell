@@ -9,23 +9,24 @@ void change_dir(char * command)
 	parameter = strtok_r(NULL, " ", &save_command);
 	if(parameter == NULL || strcmp(parameter,"~") == 0)
 	{
+		int i;
+		for(i=0;i<strlen(home);i++)
+			path[i] = home[i];
+		path[i] = '\0';		
 		int returned_value = chdir(home);
 	}
 	else if(strcmp(parameter,".") == 0)
 		return;
 	else if(strcmp(parameter,"..") == 0)
 	{
-		// if(strcmp(home, path) == 0)
-			// printf("Error: cannot go below home directory\n");
-		// else
-		// {
-			int i;
-			for(i=strlen(path)-1;path[i]!= '/';i--)
-			path[i] = '\0';
-			chdir(path);
-		// }
+		int i;
+		for(i=strlen(path)-1;path[i]!= '/';i--)
+		path[i] = '\0';
+		chdir(path);
 	}
-	else if(chdir(parameter) == -1)
+	else if(chdir(parameter) == 0)
+		//update path variable
+	else	
 		perror("Error");
 	return;
 }
