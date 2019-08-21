@@ -27,14 +27,8 @@ void without_flag_l(int choice, char * directory)
 	file = readdir(directory_stream);
 	while(file != NULL)
 	{
-		if(choice % 4 == 0 && file->d_name[0] != '.')
-		{
+		if((choice % 4 == 0 && file->d_name[0] != '.') || choice % 4 == 1)
 			printf("%s\n", file->d_name);
-		}	
-		else if(choice % 4 == 1)
-		{
-			printf("%s\n", file->d_name);
-		}
 		file = readdir(directory_stream);
 	}
 }
@@ -47,14 +41,42 @@ void flag_l(int choice, char * directory)
 	file = readdir(directory_stream);
 	while(file != NULL)
 	{
-		if(choice % 4 == 2 && file->d_name[0] != '.')
+		// printf("Yes\n");
+		if(!((choice % 4 == 2 && file->d_name[0] != '.') || choice % 4 == 3))
 		{
-			printf("%s\n", file->d_name);
-		}	
-		else if(choice % 4 == 3)
-		{
-			printf("%s\n", file->d_name);
+			file = readdir(directory_stream);
+			continue;
 		}
+		struct stat file_details;
+		stat(file->d_name,&file_details);
+		//print file permissions
+		printf( (S_ISDIR(file_details.st_mode)) ? "d" : "-");
+    	printf( (file_details.st_mode & S_IRUSR) ? "r" : "-");
+    	printf( (file_details.st_mode & S_IWUSR) ? "w" : "-");
+    	printf( (file_details.st_mode & S_IXUSR) ? "x" : "-");
+    	printf( (file_details.st_mode & S_IRGRP) ? "r" : "-");
+    	printf( (file_details.st_mode & S_IWGRP) ? "w" : "-");
+    	printf( (file_details.st_mode & S_IXGRP) ? "x" : "-");
+	    printf( (file_details.st_mode & S_IROTH) ? "r" : "-");
+    	printf( (file_details.st_mode & S_IWOTH) ? "w" : "-");
+    	printf( (file_details.st_mode & S_IXOTH) ? "x" : "-");
+    	printf("\t");
+    	//number of hard links to the file
+  		printf(" %3d", (int)file_details.st_nlink);
+    	//owner
+    	struct passwd * uname = getpwuid(file_details.st_uid);
+  		printf(" %s",uname->pw_name);
+    	//group
+  		struct group * ugroup = getgrgid(file_details.st_gid);
+  		printf(" %s",ugroup->gr_name);
+    	//number of bytes
+  		printf(" %10d", (int)file_details.st_size);
+    	//time lasst modified & file name
+		struct tm *time;
+		char datestring[256];
+    	time = localtime(&file_details.st_mtime);
+    	strftime(datestring, sizeof(datestring), "%b %d %H:%M", time);
+    	printf(" %s %s\n", datestring, file->d_name);
 		file = readdir(directory_stream);
 	}
 }
