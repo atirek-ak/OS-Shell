@@ -23,6 +23,7 @@ void initiate()
 	getlogin_r(user_name, sizeof(user_name));
 	gethostname(system_name, sizeof(system_name));
 	getcwd(home, sizeof(home));
+	// printf("%s\n", home);
 	main_loop();
 }
 

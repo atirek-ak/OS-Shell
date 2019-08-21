@@ -19,14 +19,26 @@ void change_dir(char * command)
 		return;
 	else if(strcmp(parameter,"..") == 0)
 	{
+		// printf("%s\n", path);
 		int i;
-		for(i=strlen(path)-1;path[i]!= '/';i--)
+		for(i=strlen(path)-1;path[i]!= '/';i--){;}
 		path[i] = '\0';
 		chdir(path);
+		// printf("%s\n", path);
 	}
 	else if(chdir(parameter) == 0)
+	{
 		//update path variable
+		// printf("%s\n", path);
+		path[strlen(path)] = '/';
+		int i = strlen(path);
+		for(int j=0;j < strlen(parameter);i++, j++)
+			path[i] = parameter[j];
+		path[i] = '\0';
+		// printf("%s\n", path);
+	}
 	else	
 		perror("Error");
+	// get_pwd();
 	return;
 }

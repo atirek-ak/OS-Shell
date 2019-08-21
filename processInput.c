@@ -11,7 +11,12 @@ void process_single_command(char * parameter)
 	else if(strcmp("echo", word) == 0)
 		echo(parameter);
 	else if(strcmp("pwd", word) == 0)
-		printf("%s\n", path);
+	{
+		char str[1000];
+		getcwd(str, sizeof(str));
+		printf("%s\n", str);
+	}
+
 	return;
 }
 

@@ -2,6 +2,11 @@
 
 void get_pwd()
 {
+	// if(path[strlen(path) - 1] != '/')
+	// {
+		// path[strlen(path)] = '\0';
+		// printf("%s\n", path);
+	// }
 	if(strcmp(home, path) == 0)
 	{
 		displayed_path[0] = '~';
