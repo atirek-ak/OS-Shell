@@ -36,3 +36,9 @@ void change_dir(char * command);
 
 //echo.c
 void echo(char * command);
+
+//ls.c
+void ls(char * command);
+void flag_l(int choice, char * directory);
+void without_flag_l(int choice, char * directory);
+void open_directory(char * directory);

@@ -16,6 +16,8 @@ void process_single_command(char * parameter)
 		getcwd(str, sizeof(str));
 		printf("%s\n", str);
 	}
+	else if(strcmp("ls", word) == 0)
+		ls(parameter);
 
 	return;
 }
