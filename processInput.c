@@ -18,7 +18,8 @@ void process_single_command(char * parameter)
 	}
 	else if(strcmp("ls", word) == 0)
 		ls(parameter);
-
+	else
+		system_command(parameter);
 	return;
 }
 

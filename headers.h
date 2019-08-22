@@ -42,3 +42,9 @@ void ls(char * command);
 void flag_l(int choice, char * directory);
 void without_flag_l(int choice, char * directory);
 void open_directory(char * directory);
+
+//processInput.c
+void system_command(char * command);
+void start_background_process(char * command[]);
+void start_process(char * command[]);
+
