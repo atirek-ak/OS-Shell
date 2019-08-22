@@ -15,6 +15,7 @@
 //Global variables
 char user_name[100], system_name[100];
 char home[1024], path[1024], displayed_path[1024];
+int status;
 
 //Functions
 //main.c

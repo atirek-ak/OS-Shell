@@ -4,6 +4,8 @@ long long int backid[100];
 
 void start_process(char * command[])
 {
+	// for(int i=0;command[i] != NULL;i++)
+		// printf("%s\n", command[i]);
 	pid_t child_id;
 	child_id = fork();
 	if(child_id==0)
@@ -49,6 +51,7 @@ void system_command(char * command)
 	int i = 0;
 	while(token != NULL)
 	{
+		printf("%s\n", token);
 		input[i] = token;
 		token = strtok_r(NULL, " ", &save_command);
 		i++;
@@ -60,7 +63,7 @@ void system_command(char * command)
 	}
 	else
 	{
-		printf("%s\n", );
+		// printf("%s\n", );
 		start_process(input);
 	}
 }

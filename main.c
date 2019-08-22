@@ -2,7 +2,6 @@
 
 void main_loop()
 {
-	int i=0;
 	do
 	{
 		//Print directory & user details; Change directory
@@ -14,8 +13,8 @@ void main_loop()
 		char * input;
 		input = get_input();
 		process_input(input);
-		i++;
-	}while(i<10);
+	}while(status);
+	return;
 }
 
 void initiate()
@@ -25,10 +24,12 @@ void initiate()
 	getcwd(home, sizeof(home));
 	// printf("%s\n", home);
 	main_loop();
+	return;
 }
 
 int main(int argc, char  *argv[])
 {
+	status = 1;
 	initiate();
 	return EXIT_SUCCESS;
 }

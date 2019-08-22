@@ -18,6 +18,8 @@ void process_single_command(char * parameter)
 	}
 	else if(strcmp("ls", word) == 0)
 		ls(parameter);
+	else if(strcmp("quit", word) == 0)
+		status = 0;
 	else
 		system_command(parameter);
 	return;
@@ -30,7 +32,7 @@ void process_input(char * input)
 	strcpy(input_copy, input);
 	// printf("Yes\n");
 	char * command = strtok_r(input_copy, ";", &save_single_command);
-	while(command != NULL)
+	while(command != NULL && status)
 	{
 		process_single_command(command);
 		command = strtok_r(NULL,";",&save_single_command);
