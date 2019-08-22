@@ -8,7 +8,8 @@ void start_process(char * command[])
 		// printf("%s\n", command[i]);
 	pid_t child_id;
 	child_id = fork();
-	if(child_id==0)
+	// printf("**%d\n", child_id);
+	if(child_id == 0)
 	{
 		execvp(command[0],command);
 		perror("Error:");
@@ -51,11 +52,11 @@ void system_command(char * command)
 	int i = 0;
 	while(token != NULL)
 	{
-		printf("%s\n", token);
 		input[i] = token;
 		token = strtok_r(NULL, " ", &save_command);
 		i++;
 	}
+	input[i] = NULL;
 	if(input[i-1][strlen(input[i-1]) - 1] == '&')
 	{
 		input[i-1][strlen(input[i-1]) - 1] = '\0';
