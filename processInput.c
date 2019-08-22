@@ -20,6 +20,8 @@ void process_single_command(char * parameter)
 		ls(parameter);
 	else if(strcmp("quit", word) == 0)
 		status = 0;
+	else if(strcmp("pinfo", word) == 0)
+		pinfo(parameter);
 	else
 		system_command(parameter);
 	return;
