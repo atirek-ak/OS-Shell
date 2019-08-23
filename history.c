@@ -6,6 +6,8 @@ int pointer = 0, size = 0;
 
 void store_in_history(char * command)
 {
+	if(strlen(command) == 0)
+		return; 
 	history[pointer] = command;
 	pointer++;
 	if(pointer == 20)
