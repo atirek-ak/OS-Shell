@@ -59,8 +59,7 @@ void flag_l(int choice, char * directory)
     	printf( (file_details.st_mode & S_IXGRP) ? "x" : "-");
 	    printf( (file_details.st_mode & S_IROTH) ? "r" : "-");
     	printf( (file_details.st_mode & S_IWOTH) ? "w" : "-");
-    	printf( (file_details.st_mode & S_IXOTH) ? "x" : "-");
-    	printf("\t");
+    	printf( (file_details.st_mode & S_IXOTH) ? "x\t" : "-\t");
     	//number of hard links to the file
   		printf(" %3d", (int)file_details.st_nlink);
     	//owner

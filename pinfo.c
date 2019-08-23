@@ -1,65 +1,53 @@
 #include "headers.h"
 
 //function to calculate Relative path
-void find_relative_path(char cwd[],char home[],char rwd[])
+void find_relative_path(char cwd[],char rwd[])
 {
-	long long i,n=strlen(cwd),h=strlen(home);
-	
-	//current working directory is definitely not inside the home directory
-	if(n<h)
+	int i, flag;
+	if(strlen(cwd) < strlen(home))
 	{
-		if(n==1 && cwd[0]=='/')
+		if(strlen(cwd) == 1 && cwd[0] == '/')
 		{
 			strcpy(rwd,"/");
 			return;
 		}
-
-		char copy_cwd[1000];
+		char copy_cwd[1000], cur_dir[1000];
 		strcpy(copy_cwd,cwd);
-		char cur_dir[1000];
-		char* token=strtok(copy_cwd,"/");
-		while(token!=NULL)
+		for(char * token = strtok(copy_cwd, "/"); token != NULL; token = strtok(NULL,"/"))
 		{
-			strcpy(cur_dir,token);
-			token=strtok(NULL,"/");
+			strcpy(cur_dir, token);
 		}
 		rwd[0]='/';
-		strcpy(&rwd[1],cur_dir);
-
+		strcpy(&rwd[1], cur_dir);
 	}
 	else
 	{
-		int flag=0;
-
-		//to check if current working directory isn't inside home
-		for(i=0; i<h; i++)
+		for(i=0; i < strlen(home); i++)
 		{
-			if(home[i]!=cwd[i])
+			if(home[i] != cwd[i])
 			{
-				flag=1;
+				flag = 1;
 				break;
 			}			
 		}
-
-		//if current working directory isn't inside home
-		if(flag==1)
+		if(flag != 1)
 		{
-			char copy_cwd[1000];
-			strcpy(copy_cwd,cwd);
-			char cur_dir[1000];
-			char* token=strtok(copy_cwd,"/");
-			while(token!=NULL)
-			{
-				strcpy(cur_dir,token);
-				token=strtok(NULL,"/");
-			}
-			rwd[0]='/';
-			strcpy(&rwd[1],cur_dir);
+			strcpy(rwd, "~");
+			strcpy(&rwd[1], &cwd[i]);
+			
 		}
 		else
 		{
-			strcpy(rwd,"~");
-			strcpy(&rwd[1],&cwd[i]);
+			char copy_cwd[1000], cur_dir[1000];
+			strcpy(copy_cwd,cwd);
+			char * token = strtok(copy_cwd, "/");
+			while(token != NULL)
+			{
+				strcpy(cur_dir, token);
+				token = strtok(NULL,"/");
+			}
+			rwd[0] = '/';
+			strcpy(&rwd[1], cur_dir);
 		}
 	}
 	
@@ -68,76 +56,49 @@ void find_relative_path(char cwd[],char home[],char rwd[])
 //main pinfo function
 void pinfo(char input[])
 {
-	char input_id[100];
-	char proc[100];
-	proc[0]='\0';
-	strcpy(proc,"/proc/");
-	char* saveptr;
-	char* token = strtok_r(input," ",&saveptr);
-	token = strtok_r(NULL," ",&saveptr);
-	if(token!=NULL)
-	{
-		//strcpy(input_id,token);
-		strcat(proc,token);
-	}
+	char * saveptr;
+	char base_directory[100];
+	char stat_directory[100];
+	FILE * statfile;
+	int pid, size;
+	char status, name[20], rwd[100], path[100];
+	// proc[0]='\0';
+	strcpy(base_directory,"/proc/");
+	char * token = strtok_r(input, " ", &saveptr);
+	token = strtok_r(NULL, " ", &saveptr);
+	if(token == NULL)
+		strcat(base_directory, "self");
 	else
-	{		
-		//strcpy(input_id,str(getpid()));
-		strcat(proc,"self");
-	}
-	char stat[100];
-	
-	//setting stat = /proc/id/stat
-	strcpy(stat,proc);
-	strcat(stat,"/stat");
-	FILE* statfile;
-	if(!(statfile = fopen(stat,"r")))
+		strcat(base_directory, token);
+	strcpy(stat_directory, base_directory);
+	strcat(stat_directory , "/stat");
+	if(!(statfile = fopen(stat_directory, "r")))
 	{
-		printf("Error finding info on process\n");
+		perror("Error:\n");
 		return;
 	}
-	long long int pid;
-	char status;
-	char name[20];
-	
-	//scanning pid, name and status
-	fscanf(statfile,"%lld %s %c",&pid,name,&status);
-	fclose(statfile);
-
-	printf("pid -- %lld\n",pid);
+	fscanf(statfile,"%d %s %c",&pid,name,&status);
+	printf("pid -- %d\n",pid);
 	printf("Process Status -- %c\n",status);
-
-	//setting stat = /proc/id/statm
-	strcpy(stat,proc);
-	strcat(stat,"/statm");
-	if(!(statfile = fopen(stat,"r")))
-	{
-		printf("Error finding info on process : %d\n",getpid());
-	}
-
-	long long int size;
-
-	//scanning size in virtual memory
-	fscanf(statfile,"%lld",&size);
+	strcpy(stat_directory, base_directory);
 	fclose(statfile);
-
-	printf("%lld {Virtual Memory}\n",size);
-
-	//setting stat = /proc/id/exe
-	strcpy(stat,proc);
-	strcat(stat,"/exe");
-	char path[100];
-	ssize_t path_len = readlink(stat, path, sizeof(path));
+	strcat(stat_directory, "/statm");
+	if(!(statfile = fopen(stat_directory,"r")))
+		printf("Error finding info on process : %d\n",getpid());
+	//scanning size in virtual memory
+	fscanf(statfile,"%d",&size);
+	fclose(statfile);
+	printf("%d {Virtual Memory}\n",size);
+	strcpy(stat_directory,base_directory);
+	strcat(stat_directory,"/exe");
+	ssize_t path_len = readlink(stat_directory, path, sizeof(path));
     if(path_len < 0) 
     {
-        printf("Error reading symbolic link %s\n", stat);
+        printf("Error reading symbolic link %s\n", stat_directory);
         return;
     }
-
-    //converting executable path to relative path to home
-    char rwd[100];
-    find_relative_path(path,home,rwd);
-    printf("%s\n",rwd);
+    find_relative_path(path, rwd);
+    printf("%s\n", rwd);
 	
 
 }
