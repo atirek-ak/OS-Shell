@@ -89,7 +89,7 @@ void check_background_processes()
 	{
 		int status;
 		if(waitpid(processes[i].id, &status, WNOHANG) != 0)
-			printf("Process %s exited whose id is %d\n", processes[i].name, processes[i].id);
+			printf("%s with pid %d exited normally\n", processes[i].name, processes[i].id);
 		else
 		{
 			temp_processes[temp_number_of_processes].name = processes[i].name;

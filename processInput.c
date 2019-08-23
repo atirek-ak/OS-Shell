@@ -4,9 +4,22 @@ void process_single_command(char * parameter)
 {
 	char command[1000];
 	char * save_command;
+	char last_character = ' ';
+	if(strlen(parameter))
+	{
+		int index = strlen(parameter) - 1;
+		last_character = parameter[index];
+		while(last_character == ' ' && index > 0)
+		{
+			index--;
+			last_character = parameter[index];
+		}
+	}
 	strcpy(command, parameter);
 	char * word = strtok_r(command, " ", &save_command);
-	if(strcmp("cd", word) == 0)
+	if(last_character == '&')
+		system_command(parameter);
+	else if(strcmp("cd", word) == 0)
 		change_dir(parameter);
 	else if(strcmp("echo", word) == 0)
 		echo(parameter);
