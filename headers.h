@@ -60,4 +60,6 @@ void start_background_process(char * command[]);
 void system_command(char * command);
 void check_background_processes();
 
-
+//history.c
+void store_in_history(char * command);
+void display_history(char * command);

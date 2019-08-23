@@ -33,6 +33,8 @@ void process_single_command(char * parameter)
 		ls(parameter);
 	else if(strcmp("quit", word) == 0)
 		status = 0;
+	else if(strcmp("history", word) == 0)
+		display_history(parameter);
 	else
 		system_command(parameter);
 	return;

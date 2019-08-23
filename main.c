@@ -11,6 +11,7 @@ void main_loop()
 		//Input
 		char * input;
 		input = get_input();
+		store_in_history(input);
 		process_input(input);
 		//check background processes
 		check_background_processes();
