@@ -35,6 +35,8 @@ void process_single_command(char * parameter)
 		status = 0;
 	else if(strcmp("history", word) == 0)
 		display_history(parameter);
+	else if(strcmp("pinfo", word) == 0)
+		pinfo(parameter);
 	else
 		system_command(parameter);
 	return;

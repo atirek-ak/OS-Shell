@@ -63,3 +63,7 @@ void check_background_processes();
 //history.c
 void store_in_history(char * command);
 void display_history(char * command);
+
+//pinfo.c
+void find_relative_path(char cwd[],char home[],char rwd[]);
+void pinfo(char input[]);
