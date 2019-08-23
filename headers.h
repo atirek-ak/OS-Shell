@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
+#include <sys/dir.h>
+#include <ctype.h>
+#include <locale.h>
 #include <sys/stat.h>
 #include <dirent.h>
 #include <pwd.h>
@@ -11,6 +14,8 @@
 #include <grp.h>
 #include <sys/wait.h>
 #include <fcntl.h> 
+#include <errno.h>
+#include <signal.h>
 
 //Global variables
 char user_name[100], system_name[100];
@@ -48,4 +53,11 @@ void open_directory(char * directory);
 void system_command(char * command);
 void start_background_process(char * command[]);
 void start_process(char * command[]);
+
+//systemCommands.c
+void start_process(char * command[]);
+void start_background_process(char * command[]);
+void system_command(char * command);
+void check_background_processes();
+
 
