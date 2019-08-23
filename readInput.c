@@ -1,12 +1,10 @@
 #include "headers.h"
 
-#define BUFFER_SIZE 1024
-
 char * get_input()
 {
-	int size = BUFFER_SIZE;
-	char * buffer = malloc(sizeof(char) * BUFFER_SIZE);
-	int i=0;
+	char * buffer = malloc(sizeof(char) * 1024);
+	int size = 1024, i=0;
+	char c;
 	if(!buffer)
 	{
 		perror("Error");
@@ -14,19 +12,22 @@ char * get_input()
 	}
 	while(1)
 	{
-		char c = getchar();
-		if(c == EOF || c == '\n')
+		c = getchar();
+		if(c == EOF)
+		{
+			buffer[i++] = '\0';
+			return buffer;
+		}
+		else if(c == '\n')
 		{
 			buffer[i++] = '\0';
 			return buffer;
 		}
 		else
-		{
 			buffer[i++] = c;
-		}
-		if(i >= BUFFER_SIZE)
+		if(i >= 1024)
 		{
-			size += BUFFER_SIZE;
+			size += 1024;
 			buffer = realloc(buffer, size);
 			if(!buffer)
 			{
