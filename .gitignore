@@ -1,3 +1,4 @@
 #.o files
 *.o
 shell
+*.txt
