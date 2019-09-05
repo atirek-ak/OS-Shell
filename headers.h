@@ -42,6 +42,7 @@ void change_dir(char * command);
 
 //echo.c
 void echo(char * command);
+char * filter_parameter(char * parameter);
 
 //ls.c
 void ls(char * command);

@@ -1,0 +1,20 @@
+echo "abs"
+quit
+echo "snf"
+echo "abc"
+quit
+echo a
+quit
+echo abc
+echo lll
+echo "anvb"
+quit
+echo abs
+quit
+echo abc
+echo "abc"
+echo 'abc'
+quit
+echo abcadfsavv sdvsvf
+echo "ajhvsjhavfhjksavb :c "ksadvbk
+quit
