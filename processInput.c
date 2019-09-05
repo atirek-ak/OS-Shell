@@ -25,8 +25,15 @@ void process_single_command(char * parameter)
 		echo(parameter);
 	else if(strcmp("pwd", word) == 0)
 	{
-		char str[1000];
+		char str[1024];
 		getcwd(str, sizeof(str));
+		word = strtok_r(NULL, " ", &save_command);
+		if(strcmp(word, ">") == 0)
+		{
+			word = strtok_r(NULL, " ", &save_command);
+			output_to_file(str, word);
+			return;
+		}
 		printf("%s\n", str);
 	}
 	else if(strcmp("ls", word) == 0)
