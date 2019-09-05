@@ -8,7 +8,8 @@ void output_to_file(char * output, char * file)
     	printf("Error!");
     	exit(1);
    	}
-   	output[strlen(output) - 1] = '\0';
+   	if(output[strlen(output) - 1] == " ")
+	   	output[strlen(output) - 1] = '\0';
    	fprintf(file_pointer,"%s", output);
     fclose(file_pointer);
 }
