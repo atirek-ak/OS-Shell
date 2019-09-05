@@ -68,3 +68,6 @@ void display_history(char * command);
 //pinfo.c
 void find_relative_path(char cwd[],char rwd[]);
 void pinfo(char input[]);
+
+//output.c
+void output_to_file(char * output, char * file);

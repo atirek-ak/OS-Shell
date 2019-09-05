@@ -24,15 +24,24 @@ void echo(char * command)
 	strcpy(command_copy, command);
 	char * parameter = strtok_r(command_copy, " ", &save_command);
 	parameter = strtok_r(NULL, " ", &save_command);
-	// char * output;
+	char output[1024];
 	while(parameter)
 	{
 		char * filtered_parameter = filter_parameter(parameter);
-		printf("%s ", filtered_parameter);
-		// strcat(output, filtered_parameter);
-		// strcat(output, " ")
+			// printf("ENcountered\n");
+		// printf("%s\n", filtered_parameter);
+		if(strcmp(filtered_parameter, ">") == 0)
+		{
+			parameter = strtok_r(NULL, " ", &save_command);
+			output_to_file(output, parameter);
+			break;
+		}
+		strcat(output, filtered_parameter);
+		strcat(output, " ");
+		// printf("%s\n", output);
 		parameter = strtok_r(NULL, " ", &save_command);
 	}
-	printf("\n");
+	printf("%s\n", output);
+	output[0] = '\0';
 	return;
 }
