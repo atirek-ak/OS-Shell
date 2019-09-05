@@ -21,6 +21,8 @@ void open_directory(char * directory)
 
 void without_flag_l(int choice, char * directory)
 {
+	char output[1024*1024];
+	int flag = 1;
 	open_directory(directory);
 	if(directory_stream == NULL)
 		return;
@@ -28,9 +30,31 @@ void without_flag_l(int choice, char * directory)
 	while(file != NULL)
 	{
 		if((choice % 4 == 0 && file->d_name[0] != '.') || choice % 4 == 1)
-			printf("%s\n", file->d_name);
+		{
+			if(flag)
+			{
+				flag = 0;
+				strcpy(output, file->d_name);
+			}
+			else
+				strcat(output, file->d_name);
+			strcat(output, "\n");
+			// printf("%s\n", file->d_name);
+		}
 		file = readdir(directory_stream);
+		// printf("%s\n", file);
+		if(file == NULL)
+			break;
+		if(strcmp(file, ">") == 0)
+		{
+			file = readdir(directory_stream);
+			printf("%s\n", file);
+			output_to_file(output, file);
+			return;
+		}
 	}
+	printf("%s", output);
+	output[0] = '\0';
 }
 
 void flag_l(int choice, char * directory)
@@ -41,7 +65,6 @@ void flag_l(int choice, char * directory)
 	file = readdir(directory_stream);
 	while(file != NULL)
 	{
-		// printf("Yes\n");
 		if(!((choice % 4 == 2 && file->d_name[0] != '.') || choice % 4 == 3))
 		{
 			file = readdir(directory_stream);
@@ -85,7 +108,6 @@ void ls(char * command)
 	char * save_command;
 	char command_copy[1000];
 	strcpy(command_copy, command);
-	// printf("No\n");
 	char * parameter = strtok_r(command_copy, " ", &save_command);
 	char * previours_parameter;
 	parameter = strtok_r(NULL, " ", &save_command);
