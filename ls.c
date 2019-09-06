@@ -2,6 +2,7 @@
 
 DIR * directory_stream;
 struct dirent * file;
+int output_flag = 0;
 
 void open_directory(char * directory)
 {
@@ -19,8 +20,9 @@ void open_directory(char * directory)
 }
 
 
-void without_flag_l(int choice, char * directory)
+void without_flag_l(int choice, char * directory, char * target_file)
 {
+	// printf("%s\n", directory);
 	char output[1024*1024];
 	int flag = 1;
 	open_directory(directory);
@@ -43,21 +45,19 @@ void without_flag_l(int choice, char * directory)
 		}
 		file = readdir(directory_stream);
 		// printf("%s\n", file);
-		if(file == NULL)
-			break;
-		if(strcmp(file, ">") == 0)
-		{
-			file = readdir(directory_stream);
-			printf("%s\n", file);
-			output_to_file(output, file);
-			return;
-		}
 	}
-	printf("%s", output);
+	if(output_flag)
+	{
+		output_flag = 0;
+		// printf("%s\n", target_file);
+		output_to_file(output, target_file);
+	}
+	else
+		printf("%s", output);
 	output[0] = '\0';
 }
 
-void flag_l(int choice, char * directory)
+void flag_l(int choice, char * directory, char * target_file)
 {
 	open_directory(directory);
 	if(directory_stream == NULL)
@@ -105,11 +105,12 @@ void flag_l(int choice, char * directory)
 
 void ls(char * command)
 {
+	int update_previous_parameter = 1;
 	char * save_command;
 	char command_copy[1000];
 	strcpy(command_copy, command);
 	char * parameter = strtok_r(command_copy, " ", &save_command);
-	char * previours_parameter;
+	char * previours_parameter = NULL;
 	parameter = strtok_r(NULL, " ", &save_command);
 	int flag_choice = 0;
 	/*
@@ -140,8 +141,18 @@ void ls(char * command)
 		}
 		else if(strcmp(parameter, "-la") == 0 || strcmp(parameter, "-al") == 0)
 			flag_choice = 3;
+		else if(strcmp(parameter, ">") == 0)
+		{
+			update_previous_parameter = 0;
+			output_flag = 1;
+		}
 		else
 			flag_choice += 4;
+		if(update_previous_parameter == 0)
+		{
+			parameter = strtok_r(NULL, " ", &save_command);
+			break;
+		}
 		previours_parameter = parameter;
 		parameter = strtok_r(NULL, " ", &save_command);
 	}
@@ -149,19 +160,19 @@ void ls(char * command)
 	{
 		case 0:
 		case 1:
-			without_flag_l(flag_choice, NULL);
+			without_flag_l(flag_choice, NULL, parameter);
 			break;
 		case 2:
 		case 3:
-			flag_l(flag_choice, NULL);
+			flag_l(flag_choice, NULL, parameter);
 			break;
 		case 4:
 		case 5:
-			without_flag_l(flag_choice, previours_parameter);
+			without_flag_l(flag_choice, previours_parameter, parameter);
 			break;
 		case 6:
 		case 7:
-			flag_l(flag_choice, previours_parameter);
+			flag_l(flag_choice, previours_parameter, parameter);
 			break;
 	}
 }

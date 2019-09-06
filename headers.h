@@ -46,8 +46,8 @@ char * filter_parameter(char * parameter);
 
 //ls.c
 void ls(char * command);
-void flag_l(int choice, char * directory);
-void without_flag_l(int choice, char * directory);
+void flag_l(int choice, char * directory, char * target_file);
+void without_flag_l(int choice, char * directory, char * target_file);
 void open_directory(char * directory);
 
 //processInput.c
