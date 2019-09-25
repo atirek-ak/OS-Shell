@@ -11,7 +11,7 @@ char * filter_parameter(char * parameter)
 		c = parameter[i];
 		if(!(c == '\"' || c == '\''))
 		{
-			filtered_parameter[j++] = c;;
+			filtered_parameter[j++] = c;
 		}
 	}
 	return filtered_parameter;
@@ -19,38 +19,35 @@ char * filter_parameter(char * parameter)
 
 void echo(char * command)
 {
+	int output_redirect = 0;
+	char file_name[100];
 	char * save_command;
-	char command_copy[1000];
+	char command_copy[1000], command_copy2[100];
 	strcpy(command_copy, command);
 	char * parameter = strtok_r(command_copy, " ", &save_command);
 	parameter = strtok_r(NULL, " ", &save_command);
-	char output[1024];
-	// printf("%d\n", strlen(output));
-	int flag = 1;
+	while(parameter)
+	{
+		if(strcmp(parameter, ">") == 0)
+		{
+			output_redirect = 1;
+			parameter = strtok_r(NULL, " ", &save_command);
+			parameter = strtok_r(NULL, " ", &save_command);
+			file_name = strtok_r(NULL, " ", &save_command);
+			dup2(1, file_name);
+		}
+		parameter = strtok_r(NULL, " ", &save_command);
+	}
+	strcpy(command_copy2, command);
+	parameter = strtok_r(command_copy2, " ", &save_command);
+	parameter = strtok_r(NULL, " ", &save_command);
 	while(parameter)
 	{
 		char * filtered_parameter = filter_parameter(parameter);
-			// printf("ENcountered\n");
-		// printf("%s\n", filtered_parameter);
-		if(strcmp(filtered_parameter, ">") == 0)
-		{
-			parameter = strtok_r(NULL, " ", &save_command);
-			output_to_file(output, parameter);
-			return;
-		}
-		if(flag)
-		{
-			strcpy(output, filtered_parameter);
-			flag = 0;
-		}
-		else
-			strcat(output, filtered_parameter);
-		// printf("%s\n", output);
-		strcat(output, " ");
-		// printf("%s\n", output);
+		printf("%s ", filter_parameter);
 		parameter = strtok_r(NULL, " ", &save_command);
 	}
-	printf("%s\n", output);
-	output[0] = '\0';
+	if(output_redirect)
+		dup2(file_name, 1);		
 	return;
 }
