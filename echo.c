@@ -11,7 +11,7 @@ char * filter_parameter(char * parameter)
 		c = parameter[i];
 		if(!(c == '\"' || c == '\''))
 		{
-			filtered_parameter[j++] = c;
+			filtered_parameter[j++] = c;;
 		}
 	}
 	return filtered_parameter;
