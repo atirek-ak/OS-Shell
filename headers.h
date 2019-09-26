@@ -21,6 +21,8 @@
 char user_name[100], system_name[100];
 char home[1024], path[1024], displayed_path[1024];
 int status;
+int redirect_output, redirect_input;
+char * redirect_output_descriptor, redirect_input_descriptor;
 
 //Functions
 //main.c
@@ -36,6 +38,7 @@ char * get_input();
 //processInput.c
 void process_input(char * input);
 void process_single_command(char * parameter);
+char * refine_parameter(char * parameter);
 
 //cd.c
 void change_dir(char * command);
