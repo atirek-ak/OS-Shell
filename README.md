@@ -4,7 +4,7 @@ An OS shell replicated in C using system calls.
 ## Getting Started
 
 ### Running the project
-```make```  
+```make```
 ```./shell```
 
 ## Description:

@@ -42,12 +42,11 @@ void change_dir(char * command);
 
 //echo.c
 void echo(char * command);
-char * filter_parameter(char * parameter);
 
 //ls.c
 void ls(char * command);
-void flag_l(int choice, char * directory, char * target_file);
-void without_flag_l(int choice, char * directory, char * target_file);
+void flag_l(int choice, char * directory);
+void without_flag_l(int choice, char * directory);
 void open_directory(char * directory);
 
 //processInput.c
@@ -68,6 +67,3 @@ void display_history(char * command);
 //pinfo.c
 void find_relative_path(char cwd[],char rwd[]);
 void pinfo(char input[]);
-
-//output.c
-void output_to_file(char * output, char * file);
