@@ -22,7 +22,8 @@ char user_name[100], system_name[100];
 char home[1024], path[1024], displayed_path[1024];
 int status;
 int redirect_output, redirect_input;
-char * redirect_output_descriptor, redirect_input_descriptor;
+char * redirect_output_descriptor, redirect_input_descriptor, piping_write, piping_read;
+int fd1[2], fd2[2];
 
 //Functions
 //main.c

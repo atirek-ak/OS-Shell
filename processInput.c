@@ -59,11 +59,7 @@ void process_single_command(char * parameter)
 	char * arguments = strtok_r(NULL, " ", &save_command);
 	while(arguments)
 	{
-		if(strcmp(arguments,"|") == 0)
-		{
-
-		}
-		else if(strcmp(arguments,">") == 0)
+		if(strcmp(arguments,">") == 0)
 		{
 			char * file_name = strtok_r(NULL, " ", &save_command);
 			redirect_output_descriptor = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -79,7 +75,7 @@ void process_single_command(char * parameter)
 		else if(strcmp(arguments,">>") == 0)
 		{
 			char * file_name = strtok_r(NULL, " ", &save_command);
-			redirect_output_descriptor = open(file_name, O_WRONLY  | O_CREAT | O_APPEND, 0644);
+			redirect_output_descriptor = open(file_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if(redirect_output_descriptor < 0)
 			{
 				perror("Error:");
@@ -141,6 +137,61 @@ void process_single_command(char * parameter)
 	return;
 }
 
+void process_pipe(char * command)
+{
+	// if (pipe(fd1)==-1) 
+    // { 
+        // perror("Pipe failed:");
+        // return; 
+    // } 
+    // if (pipe(fd2)==-1) 
+    // { 
+        // perror("Pipe failed:");
+        // return; 
+    // } 
+    // pid_t pid = fork();
+    piping_write = open("randadfafom.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    piping_read = open("randadfafom.txt", O_RDONLY, 0644);
+	char command_copy[1000];
+	int flag = 0;
+	char * save_command;
+	strcpy(command_copy, command);
+	char * word = strtok_r(command_copy, "|", &save_command);
+	char * next_word = strtok_r(NULL, "|", &save_command);
+	int default_output = dup(1);
+	int default_input = dup(0);
+	// if(pid < 0)
+	// {
+		// perror("Fork failed:");
+		// return;
+	// }
+	// else if(pid > 0)
+
+	while(1)
+	{
+		if(flag)
+		{
+			dup2(piping_read, 0);
+		}
+		if(next_word)
+		{
+			dup2(piping_write, 1);
+		}
+		process_single_command(word);
+		dup2(default_output, 1);
+		dup2(default_input, 0);
+		if(!next_word)
+		{
+			close(piping_write);
+			close(piping_read);
+			break;
+		}
+		word = next_word;
+		next_word = strtok_r(NULL, "|", &save_command);
+		flag = 1;
+	}
+}
+
 void process_input(char * input)
 {
 	char * save_single_command;
@@ -151,7 +202,7 @@ void process_input(char * input)
 	redirect_input_descriptor = NULL;
 	while(command != NULL && status)
 	{
-		process_single_command(command);
+		process_pipe(command);
 		command = strtok_r(NULL,";",&save_single_command);
 	}
 	return;
