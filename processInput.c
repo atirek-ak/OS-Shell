@@ -25,6 +25,8 @@ char * refine_parameter(char * parameter)
 				strcat(result, " ");
 			}
 		}
+		else
+			word = strtok_r(NULL, " ", &save_command);
 		word = strtok_r(NULL, " ", &save_command);
 	}
 	return result;
