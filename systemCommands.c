@@ -81,8 +81,8 @@ void check_background_processes()
 	for(int i=0;i<number_of_processes;i++)
 	{
 		int status;
-		// if(waitpid(processes[i].id, &status, WNOHANG) != 0 && processes[i].status == 1)
-		if(kill(processes[i].id, 0) != 0 && processes[i].status == 1)
+		// if(kill(processes[i].id, 0) != 0 && processes[i].status == 1)
+		if(waitpid(processes[i].id, &status, WNOHANG) != 0 && processes[i].status == 1)
 		{
 			printf("%s with pid %d exited normally\n", processes[i].name, processes[i].id);
 			processes[i].status = 0;
