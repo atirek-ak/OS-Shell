@@ -115,7 +115,10 @@ void process_single_command(char * parameter)
 	else if(strcmp("ls", word) == 0)
 		ls(refined_parameter);
 	else if(strcmp("quit", word) == 0)
+	{
 		shell_running = 0;
+		return;
+	}
 	else if(strcmp("history", word) == 0)
 		display_history(refined_parameter);
 	else if(strcmp("pinfo", word) == 0)
@@ -192,6 +195,8 @@ void process_pipe(char * command)
 			dup2(piping_write, 1);
 		}
 		process_single_command(word);
+		if(!shell_running)
+			return;
 		dup2(default_output, 1);
 		dup2(default_input, 0);
 		if(!next_word)
