@@ -132,6 +132,8 @@ void process_single_command(char * parameter)
 		fg_function(refined_parameter);
 	else if(strcmp("bg", word) == 0)
 		bg_function(refined_parameter);
+	else if(strcmp("overkill", word) == 0)
+		overkill_function(refined_parameter);
 	else
 		system_command(refined_parameter);
 	if(redirect_input)
