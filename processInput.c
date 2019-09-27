@@ -120,6 +120,10 @@ void process_single_command(char * parameter)
 		display_history(refined_parameter);
 	else if(strcmp("pinfo", word) == 0)
 		pinfo(refined_parameter);
+	else if(strcmp("setenv", word) == 0)
+		setenv_function(refined_parameter);
+	else if(strcmp("unsetenv", word) == 0)
+		unsetenv_function(refined_parameter);
 	else
 		system_command(refined_parameter);
 	if(redirect_input)

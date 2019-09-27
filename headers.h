@@ -71,3 +71,7 @@ void display_history(char * command);
 //pinfo.c
 void find_relative_path(char cwd[],char rwd[]);
 void pinfo(char input[]);
+
+//setenv.c
+void setenv_function(char * command);
+void unsetenv_function(char * command);
