@@ -141,7 +141,7 @@ void kjob_function(char * command)
 	{
 		if(job_number == number_of_processes-i)
 		{
-			kill(i, signal);
+			kill(processes[i].id, signal);
 			return;
 		}
 	}
