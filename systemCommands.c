@@ -142,6 +142,8 @@ void kjob_function(char * command)
 		if(job_number == number_of_processes-i)
 		{
 			kill(processes[i].id, signal);
+			printf("%s with pid %d killed\n", processes[i].name, processes[i].id);
+			processes[i].status = 0;
 			return;
 		}
 	}
