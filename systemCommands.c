@@ -166,6 +166,30 @@ void jobs_function()
 	// printf("%s[%lld]\n",name,backid[i]);
 }
 
+void remove_id(int id)
+{
+	int temp_number_of_processes = 0;
+	process temp_processes[1024];
+	// printf("%d\n", number_of_processes);
+	for(int i=0;i<number_of_processes;i++)
+	{
+		if(processes[i].id == id)
+			continue;
+		else
+		{
+			strcpy(temp_processes[temp_number_of_processes].name, processes[i].name);
+			temp_processes[temp_number_of_processes].id = processes[i].id;
+			temp_number_of_processes++;
+		}
+	}
+	number_of_processes = temp_number_of_processes;
+	for(int i=0;i<number_of_processes;i++)
+	{
+		strcpy(processes[i].name, temp_processes[i].name);
+		processes[i].id = temp_processes[i].id;
+	}
+}
+
 void kjob_function(char * command)
 {
 	char * input[100];
@@ -179,10 +203,12 @@ void kjob_function(char * command)
 	int signal = atoi(token);
 	for(int i=0;i<number_of_processes;i++)
 	{
-		if(job_number == number_of_processes-i)
+		if(job_number == i+1)
 		{
 			kill(processes[i].id, signal);
+			// check_background_processes();
 			printf("%s with pid %d killed\n", processes[i].name, processes[i].id);
+			remove_id(processes[i].id);
 			return;
 		}
 	}
@@ -192,11 +218,9 @@ void overkill_function(char * command)
 {
 	for(int i=0;i<number_of_processes;i++)
 	{
-		if(processes[i].status)
-		{
-			kill(processes[i].id, 9);
-			printf("%s with pid %d killed\n", processes[i].name, processes[i].id);
-		}
+		kill(processes[i].id, 9);
+			remove_id(processes[i].id);
+		printf("%s with pid %d killed\n", processes[i].name, processes[i].id);
 	}
 }
 
@@ -211,7 +235,7 @@ void fg_function(char * command)
 	int job_number = atoi(token);
 	for(int i=0;i<number_of_processes;i++)
 	{
-		if(job_number == number_of_processes-i)
+		if(job_number == i+1)
 		{
 			kill(processes[i].id, SIGCONT);
 			processes[i].status = 1;
@@ -232,7 +256,7 @@ void bg_function(char * command)
 	int job_number = atoi(token);
 	for(int i=0;i<number_of_processes;i++)
 	{
-		if(job_number == number_of_processes-i)
+		if(job_number == i+1)
 		{
 			kill(processes[i].id, SIGCONT);
 			processes[i].status = 1;
