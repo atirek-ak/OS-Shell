@@ -205,10 +205,12 @@ void kjob_function(char * command)
 	{
 		if(job_number == i+1)
 		{
+			// printf("1\n");
 			kill(processes[i].id, signal);
 			// check_background_processes();
 			printf("%s with pid %d killed\n", processes[i].name, processes[i].id);
 			remove_id(processes[i].id);
+			// printf("2\n");
 			return;
 		}
 	}
@@ -216,11 +218,11 @@ void kjob_function(char * command)
 
 void overkill_function(char * command)
 {
-	for(int i=0;i<number_of_processes;i++)
+	while(number_of_processes)
 	{
-		kill(processes[i].id, 9);
-			remove_id(processes[i].id);
-		printf("%s with pid %d killed\n", processes[i].name, processes[i].id);
+		kill(processes[0].id, 9);
+		printf("%s with pid %d killed\n", processes[0].name, processes[0].id);
+		remove_id(processes[0].id);
 	}
 }
 
