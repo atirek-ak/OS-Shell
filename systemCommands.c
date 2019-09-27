@@ -233,17 +233,20 @@ void fg_function(char * command)
 	char * token = strtok_r(command_copy, " ", &save_command);
 	token = strtok_r(NULL, " ", &save_command);
 	int job_number = atoi(token);
+	// printf("%d\n", job_number);
 	for(int i=0;i<number_of_processes;i++)
 	{
 		if(job_number == i+1)
 		{
-			signal(SIGINT, ctrl_c);
-			signal(SIGTSTP, ctrl_z);
+			// signal(SIGINT, ctrl_c);
+			// signal(SIGTSTP, ctrl_z);
+			foreground_process_id = processes[i].id;
 			kill(processes[i].id, SIGCONT);
 			processes[i].status = 1;
-			// waitpid(-1,NULL,WUNTRACED);
-			siginfo_t stat;
-			waitid(P_PID, foreground_process_id, &stat, (WUNTRACED|WNOWAIT));
+			int stat;
+			check_background_processes();
+			waitpid(processes[i].id, &stat, WUNTRACED);
+			// waitid(P_PID, foreground_process_id, &stat, (WUNTRACED|WNOWAIT));
 			return;
 		}
 	}
