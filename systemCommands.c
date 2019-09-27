@@ -16,6 +16,11 @@ void ctrl_z(int signum)
 	if(foreground_process_id)
 	{
 		kill(foreground_process_id, SIGSTOP);
+		strcpy(processes[number_of_processes].name, "process");
+		processes[number_of_processes].id = foreground_process_id;
+		foreground_process_id = 0;
+		processes[number_of_processes].status = 0;
+		number_of_processes++;
 	}
 	// siglongjmp(env, 42);
 	// printf("\n");
