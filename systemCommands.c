@@ -1,5 +1,24 @@
 #include "headers.h"
 
+void ctrl_c(int signum)
+{
+	// siglongjmp(env, 42);
+	// printf("\n");
+	if(foreground_process_id)
+	{
+		kill(foreground_process_id, 9);
+	}
+	return;
+}
+
+void ctrl_z(int signum)
+{
+	// if()
+	// siglongjmp(env, 42);
+	// printf("\n");
+	return;
+}
+
 void start_process(char * command[])
 {
 	// for(int i=0;command[i] != NULL;i++)
@@ -16,8 +35,14 @@ void start_process(char * command[])
 		execvp(command[0],command);
 	else
 	{
+
+		signal(SIGINT, ctrl_c);
+		signal(SIGTSTP, ctrl_z);
 		foreground_process_id = child_id;
 		wait(NULL);
+		foreground_process_id = 0;
+		signal(SIGINT, SIG_IGN);
+		signal(SIGTSTP, SIG_IGN);
 	}
 	return;
 }

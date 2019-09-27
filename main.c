@@ -1,12 +1,5 @@
 #include "headers.h"
 
-void signal_handler(int signum)
-{
-	// siglongjmp(env, 42);
-	// printf("\n");
-	return;
-}
-
 
 void main_loop()
 {
@@ -29,8 +22,8 @@ void main_loop()
 
 void initiate()
 {
-	signal(SIGINT, signal_handler);
-	signal(SIGTSTP, signal_handler);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGTSTP, SIG_IGN);
 	getlogin_r(user_name, sizeof(user_name));
 	gethostname(system_name, sizeof(system_name));
 	getcwd(home, sizeof(home));
