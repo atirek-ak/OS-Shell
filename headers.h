@@ -19,7 +19,7 @@
 
 typedef struct {
 	int id;
-	char name[100];
+	char name[1024];
 	int status;
 }process;
 

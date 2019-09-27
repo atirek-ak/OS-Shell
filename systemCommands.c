@@ -167,6 +167,7 @@ void overkill_function(char * command)
 			kill(processes[i].id, signal);
 			printf("%s with pid %d killed\n", processes[i].name, processes[i].id);
 			processes[i].status = 0;
+			return;
 		}
 	}
 }
