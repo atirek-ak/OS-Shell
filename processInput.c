@@ -115,7 +115,7 @@ void process_single_command(char * parameter)
 	else if(strcmp("ls", word) == 0)
 		ls(refined_parameter);
 	else if(strcmp("quit", word) == 0)
-		status = 0;
+		shell_running = 0;
 	else if(strcmp("history", word) == 0)
 		display_history(refined_parameter);
 	else if(strcmp("pinfo", word) == 0)
@@ -214,7 +214,7 @@ void process_input(char * input)
 	char * command = strtok_r(input_copy, ";", &save_single_command);
 	redirect_output_descriptor = NULL;
 	redirect_input_descriptor = NULL;
-	while(command != NULL && status)
+	while(command != NULL && shell_running)
 	{
 		process_pipe(command);
 		command = strtok_r(NULL,";",&save_single_command);

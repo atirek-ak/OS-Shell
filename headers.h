@@ -16,6 +16,7 @@
 #include <fcntl.h> 
 #include <errno.h>
 #include <signal.h>
+#include <setjmp.h>
 
 typedef struct {
 	int id;
@@ -27,12 +28,13 @@ typedef struct {
 process processes[1024];
 char user_name[100], system_name[100];
 char home[1024], path[1024], displayed_path[1024];
-int status;
+int shell_running;
 int redirect_output, redirect_input;
 char * redirect_output_descriptor, redirect_input_descriptor, piping_write, piping_read;
 int fd1[2], fd2[2];
 int number_of_processes;
-
+pid_t foreground_process_id;
+sigjmp_buf env;
 
 //Functions
 //main.c
@@ -49,6 +51,7 @@ char * get_input();
 void process_input(char * input);
 void process_single_command(char * parameter);
 char * refine_parameter(char * parameter);
+void signal_handler(int signum);
 
 //cd.c
 void change_dir(char * command);

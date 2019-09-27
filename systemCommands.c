@@ -15,7 +15,10 @@ void start_process(char * command[])
 	else if(child_id == 0)
 		execvp(command[0],command);
 	else
+	{
+		foreground_process_id = child_id;
 		wait(NULL);
+	}
 	return;
 }
 
