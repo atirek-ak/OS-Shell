@@ -237,9 +237,13 @@ void fg_function(char * command)
 	{
 		if(job_number == i+1)
 		{
+			signal(SIGINT, ctrl_c);
+			signal(SIGTSTP, ctrl_z);
 			kill(processes[i].id, SIGCONT);
 			processes[i].status = 1;
-			waitpid(-1,NULL,WUNTRACED);
+			// waitpid(-1,NULL,WUNTRACED);
+			siginfo_t stat;
+			waitid(P_PID, foreground_process_id, &stat, (WUNTRACED|WNOWAIT));
 			return;
 		}
 	}
