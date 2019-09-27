@@ -17,7 +17,14 @@
 #include <errno.h>
 #include <signal.h>
 
+typedef struct {
+	int id;
+	char name[100];
+	int status;
+}process;
+
 //Global variables
+process processes[1024];
 char user_name[100], system_name[100];
 char home[1024], path[1024], displayed_path[1024];
 int status;
@@ -63,6 +70,7 @@ void start_process(char * command[]);
 void start_background_process(char * command[]);
 void system_command(char * command);
 void check_background_processes();
+void jobs();
 
 //history.c
 void store_in_history(char * command);

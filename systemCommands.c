@@ -1,11 +1,4 @@
 #include "headers.h"
-
-typedef struct {
-	int id;
-	char * name;
-}process;
-
-process processes[100];
 int number_of_processes = 0;
 
 void start_process(char * command[])
@@ -44,11 +37,11 @@ void start_background_process(char * command[])
 		execvp(command[0],command);
 	else if(child_id > 0)
 	{
-		processes[number_of_processes].name = command[0];
+		strcpy(processes[number_of_processes].name, command[0]);
 		processes[number_of_processes].id = child_id;
+		processes[number_of_processes].status = 1;
 		number_of_processes++;
 	}
-	// printf("%d\n", number_of_processes);
 	return;
 }
 
@@ -83,25 +76,52 @@ void system_command(char * command)
 void check_background_processes()
 {
 	// printf("%d\n", number_of_processes);
-	int temp_number_of_processes = 0;
-	process temp_processes[100];
+	// int temp_number_of_processes = 0;
+	// process temp_processes[1024];
 	for(int i=0;i<number_of_processes;i++)
 	{
 		int status;
-		if(waitpid(processes[i].id, &status, WNOHANG) != 0)
-			printf("%s with pid %d exited normally\n", processes[i].name, processes[i].id);
-		else
+		if(waitpid(processes[i].id, &status, WNOHANG) != 0 && processes[i].status == 1)
 		{
-			temp_processes[temp_number_of_processes].name = processes[i].name;
-			temp_processes[temp_number_of_processes].id = processes[i].id;
-			temp_number_of_processes++;
-			// printf("No\n");
+			printf("%s with pid %d exited normally\n", processes[i].name, processes[i].id);
+			processes[i].status = 0;
 		}
 	}
-	number_of_processes = temp_number_of_processes;
-	for(int i=0;i<number_of_processes;i++)
+		// temp_processes[temp_number_of_processes].name = processes[i].name;
+		// temp_processes[temp_number_of_processes].id = processes[i].id;
+		// temp_number_of_processes++;
+	// }
+	// number_of_processes = temp_number_of_processes;
+	// for(int i=0;i<number_of_processes;i++)
+	// {
+		// processes[i].name = temp_processes[i].name;
+		// processes[i].id = temp_processes[i].id;
+	// }
+}
+
+void jobs_function()
+{
+	for(int i=number_of_processes - 1;i >= 0;i--)
 	{
-		processes[i].name = temp_processes[i].name;
-		processes[i].id = temp_processes[i].id;
+		if(processes[i].status)
+			printf("[%d] Running %s [%d]\n", number_of_processes-i, processes[i].name, processes[i].id);
+		else	
+			printf("[%d] Stopped %s [%d]\n", number_of_processes-i, processes[i].name, processes[i].id);
 	}
+	// char proc[100];
+	// proc[0]='\0';
+	// strcpy(proc,"/proc/");
+	// char string_id[10];
+	// sprintf(string_id,"%lld",backid[i]);
+	// strcat(proc,string_id);
+	// strcat(proc,"/stat");
+	// FILE * statfile;
+	// if(!(statfile = fopen(proc,"r")))
+		// return;
+	// long long int pid;
+	// char status;
+	// char name[20];
+	// fscanf(statfile,"%lld %s %c",&pid,name,&status);
+	// fclose(statfile);
+	// printf("%s[%lld]\n",name,backid[i]);
 }

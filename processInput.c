@@ -124,6 +124,8 @@ void process_single_command(char * parameter)
 		setenv_function(refined_parameter);
 	else if(strcmp("unsetenv", word) == 0)
 		unsetenv_function(refined_parameter);
+	else if(strcmp("jobs", word) == 0)
+		jobs_function();
 	else
 		system_command(refined_parameter);
 	if(redirect_input)
