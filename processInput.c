@@ -128,6 +128,10 @@ void process_single_command(char * parameter)
 		jobs_function();
 	else if(strcmp("kjob", word) == 0)
 		kjob_function(refined_parameter);
+	else if(strcmp("fg", word) == 0)
+		fg_function(refined_parameter);
+	else if(strcmp("bg", word) == 0)
+		bg_function(refined_parameter);
 	else
 		system_command(refined_parameter);
 	if(redirect_input)

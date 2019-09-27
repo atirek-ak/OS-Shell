@@ -148,3 +148,44 @@ void kjob_function(char * command)
 		}
 	}
 }
+
+void fg_function(char * command)
+{
+	char * input[100];
+	char command_copy[100];
+	char * save_command;
+	strcpy(command_copy, command);
+	char * token = strtok_r(command_copy, " ", &save_command);
+	token = strtok_r(NULL, " ", &save_command);
+	int job_number = atoi(token);
+	for(int i=0;i<number_of_processes;i++)
+	{
+		if(job_number == number_of_processes-i)
+		{
+			kill(processes[i].id, SIGCONT);
+			processes[i].status = 1;
+			waitpid(-1,NULL,WUNTRACED);
+			return;
+		}
+	}
+}
+
+void bg_function(char * command)
+{
+	char * input[100];
+	char command_copy[100];
+	char * save_command;
+	strcpy(command_copy, command);
+	char * token = strtok_r(command_copy, " ", &save_command);
+	token = strtok_r(NULL, " ", &save_command);
+	int job_number = atoi(token);
+	for(int i=0;i<number_of_processes;i++)
+	{
+		if(job_number == number_of_processes-i)
+		{
+			kill(processes[i].id, SIGCONT);
+			processes[i].status = 1;
+			return;
+		}
+	}
+}

@@ -72,6 +72,8 @@ void system_command(char * command);
 void check_background_processes();
 void jobs();
 void kjob_function(char * command);
+void fg_function(char * command);
+void bg_function(char * command);
 
 //history.c
 void store_in_history(char * command);
