@@ -1,5 +1,4 @@
 #include "headers.h"
-int number_of_processes = 0;
 
 void start_process(char * command[])
 {
@@ -78,10 +77,12 @@ void check_background_processes()
 	// printf("%d\n", number_of_processes);
 	// int temp_number_of_processes = 0;
 	// process temp_processes[1024];
+	// printf("%d\n", number_of_processes);
 	for(int i=0;i<number_of_processes;i++)
 	{
 		int status;
-		if(waitpid(processes[i].id, &status, WNOHANG) != 0 && processes[i].status == 1)
+		// if(waitpid(processes[i].id, &status, WNOHANG) != 0 && processes[i].status == 1)
+		if(kill(processes[i].id, 0) != 0 && processes[i].status == 1)
 		{
 			printf("%s with pid %d exited normally\n", processes[i].name, processes[i].id);
 			processes[i].status = 0;
@@ -151,23 +152,13 @@ void kjob_function(char * command)
 
 void overkill_function(char * command)
 {
-	char * input[100];
-	char command_copy[100];
-	char * save_command;
-	strcpy(command_copy, command);
-	char * token = strtok_r(command_copy, " ", &save_command);
-	token = strtok_r(NULL, " ", &save_command);
-	int job_number = atoi(token);
-	token = strtok_r(NULL, " ", &save_command);
-	int signal = atoi(token);
 	for(int i=0;i<number_of_processes;i++)
 	{
-		if(job_number == number_of_processes-i)
+		if(processes[i].status)
 		{
-			kill(processes[i].id, signal);
+			kill(processes[i].id, 9);
 			printf("%s with pid %d killed\n", processes[i].name, processes[i].id);
 			processes[i].status = 0;
-			return;
 		}
 	}
 }

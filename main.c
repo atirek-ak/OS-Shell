@@ -24,6 +24,7 @@ void initiate()
 	getlogin_r(user_name, sizeof(user_name));
 	gethostname(system_name, sizeof(system_name));
 	getcwd(home, sizeof(home));
+	number_of_processes = 0;
 	main_loop();
 	return;
 }

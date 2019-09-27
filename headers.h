@@ -31,6 +31,8 @@ int status;
 int redirect_output, redirect_input;
 char * redirect_output_descriptor, redirect_input_descriptor, piping_write, piping_read;
 int fd1[2], fd2[2];
+int number_of_processes;
+
 
 //Functions
 //main.c
