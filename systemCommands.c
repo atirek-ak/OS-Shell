@@ -198,9 +198,24 @@ void kjob_function(char * command)
 	strcpy(command_copy, command);
 	char * token = strtok_r(command_copy, " ", &save_command);
 	token = strtok_r(NULL, " ", &save_command);
+	if(!token)
+	{
+		perror("Error");
+		return;
+	}
 	int job_number = atoi(token);
 	token = strtok_r(NULL, " ", &save_command);
+	if(!token)
+	{
+		perror("Error");
+		return;
+	}
 	int signal = atoi(token);
+	if(job_number > number_of_processes)
+	{
+		printf("No such job\n");
+		return;
+	}
 	for(int i=0;i<number_of_processes;i++)
 	{
 		if(job_number == i+1)
