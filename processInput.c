@@ -116,6 +116,7 @@ void process_single_command(char * parameter)
 		ls(refined_parameter);
 	else if(strcmp("quit", word) == 0)
 	{
+		_exit(0);
 		shell_running = 0;
 		return;
 	}
