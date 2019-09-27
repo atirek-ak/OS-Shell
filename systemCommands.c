@@ -75,39 +75,40 @@ void system_command(char * command)
 void check_background_processes()
 {
 	// printf("%d\n", number_of_processes);
-	// int temp_number_of_processes = 0;
-	// process temp_processes[1024];
+	int temp_number_of_processes = 0;
+	process temp_processes[1024];
 	// printf("%d\n", number_of_processes);
 	for(int i=0;i<number_of_processes;i++)
 	{
 		int status;
 		// if(kill(processes[i].id, 0) != 0 && processes[i].status == 1)
-		if(waitpid(processes[i].id, &status, WNOHANG) != 0 && processes[i].status == 1)
+		if(waitpid(processes[i].id, &status, WNOHANG) != 0)
 		{
 			printf("%s with pid %d exited normally\n", processes[i].name, processes[i].id);
-			processes[i].status = 0;
+		}
+		else
+		{
+			strcpy(temp_processes[temp_number_of_processes].name, processes[i].name);
+			temp_processes[temp_number_of_processes].id = processes[i].id;
+			temp_number_of_processes++;
 		}
 	}
-		// temp_processes[temp_number_of_processes].name = processes[i].name;
-		// temp_processes[temp_number_of_processes].id = processes[i].id;
-		// temp_number_of_processes++;
-	// }
-	// number_of_processes = temp_number_of_processes;
-	// for(int i=0;i<number_of_processes;i++)
-	// {
-		// processes[i].name = temp_processes[i].name;
-		// processes[i].id = temp_processes[i].id;
-	// }
+	number_of_processes = temp_number_of_processes;
+	for(int i=0;i<number_of_processes;i++)
+	{
+		strcpy(processes[i].name, temp_processes[i].name);
+		processes[i].id = temp_processes[i].id;
+	}
 }
 
 void jobs_function()
 {
-	for(int i=number_of_processes - 1;i >= 0;i--)
+	for(int i=0;i<number_of_processes;i++)
 	{
 		if(processes[i].status)
-			printf("[%d] Running %s [%d]\n", number_of_processes-i, processes[i].name, processes[i].id);
+			printf("[%d] Running %s [%d]\n", i+1, processes[i].name, processes[i].id);
 		else	
-			printf("[%d] Stopped %s [%d]\n", number_of_processes-i, processes[i].name, processes[i].id);
+			printf("[%d] Stopped %s [%d]\n", i+1, processes[i].name, processes[i].id);
 	}
 	// char proc[100];
 	// proc[0]='\0';
@@ -144,7 +145,6 @@ void kjob_function(char * command)
 		{
 			kill(processes[i].id, signal);
 			printf("%s with pid %d killed\n", processes[i].name, processes[i].id);
-			processes[i].status = 0;
 			return;
 		}
 	}
@@ -158,7 +158,6 @@ void overkill_function(char * command)
 		{
 			kill(processes[i].id, 9);
 			printf("%s with pid %d killed\n", processes[i].name, processes[i].id);
-			processes[i].status = 0;
 		}
 	}
 }
