@@ -13,7 +13,10 @@ void ctrl_c(int signum)
 
 void ctrl_z(int signum)
 {
-	// if()
+	if(foreground_process_id)
+	{
+		kill(foreground_process_id, SIGSTOP);
+	}
 	// siglongjmp(env, 42);
 	// printf("\n");
 	return;
@@ -39,7 +42,9 @@ void start_process(char * command[])
 		signal(SIGINT, ctrl_c);
 		signal(SIGTSTP, ctrl_z);
 		foreground_process_id = child_id;
-		wait(NULL);
+		// wait(NULL);
+		siginfo_t stat;
+		waitid(P_PID, foreground_process_id, &stat, (WUNTRACED|WNOWAIT));
 		foreground_process_id = 0;
 		signal(SIGINT, SIG_IGN);
 		signal(SIGTSTP, SIG_IGN);
